@@ -1,0 +1,24 @@
+# /etc/systemd/system/token-refresh.timer
+#
+# Fires token-refresh.service every weekday at 08:50 IST (03:20 UTC).
+# Kite access tokens expire at midnight IST — refresh before market open (09:15).
+#
+# Install:
+#   sudo systemctl enable token-refresh.timer
+#   sudo systemctl start token-refresh.timer
+#
+# Check next fire time:
+#   systemctl list-timers token-refresh.timer
+
+[Unit]
+Description=Daily Kite Token Refresh Timer (weekdays 08:50 IST)
+Requires=token-refresh.service
+
+[Timer]
+# 03:20 UTC = 08:50 IST
+OnCalendar=Mon-Fri 03:20:00 UTC
+Persistent=true
+RandomizedDelaySec=60
+
+[Install]
+WantedBy=timers.target
